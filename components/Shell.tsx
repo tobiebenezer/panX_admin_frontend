@@ -503,8 +503,10 @@ function ShellInner({ kind, children }: { kind: 'customer' | 'admin'; children: 
 
       {/* Page Container wrapping topbar and content-page */}
       <div className="page-container">
-        {/* Environment Staging Banner */}
-        {kind === 'admin' && (
+        {/* Unified Sticky Header Container */}
+        <div className="sticky-header-container">
+          {/* Environment Staging Banner */}
+          {kind === 'admin' && (
           <div className="environment-banner-staging d-flex align-items-center justify-content-between px-3 py-1">
             <div className="d-flex align-items-center gap-2">
               <span
@@ -736,6 +738,7 @@ function ShellInner({ kind, children }: { kind: 'customer' | 'admin'; children: 
             </div>
           </div>
         </header>
+        </div>
 
         {/* Main Content Area */}
         <div className="content-page">

@@ -40,11 +40,19 @@ export interface PeCustomerCommitmentsMessage {
   };
 }
 
+export interface PortfolioReconciliationMessage {
+  type: 'COMPUTE_HOLDINGS_RECONCILIATION';
+  payload: {
+    reconciliations: Array<{ ourQty: number; brokerQty: number; ourCash: number; brokerCash: number }>;
+  };
+}
+
 export type AnalyticsWorkerMessage =
   | MarketQuoteMessage
   | PrivateEquityMetricsMessage
   | OrderBookDepthMessage
-  | PeCustomerCommitmentsMessage;
+  | PeCustomerCommitmentsMessage
+  | PortfolioReconciliationMessage;
 
 export interface WorkerResponse<T = any> {
   type: string;
@@ -170,6 +178,37 @@ export const calculations = {
       activeInvestorsCount: commitments.length,
     };
   },
+
+  computeHoldingsReconciliation(payload: PortfolioReconciliationMessage['payload']) {
+    const { reconciliations } = payload;
+    let totalQtyGap = 0;
+    let totalCashGap = 0;
+    let matchedCount = 0;
+    let discrepancyCount = 0;
+
+    for (let i = 0; i < reconciliations.length; i++) {
+      const qGap = Math.abs(reconciliations[i].ourQty - reconciliations[i].brokerQty);
+      const cGap = Math.abs(reconciliations[i].ourCash - reconciliations[i].brokerCash);
+      totalQtyGap += qGap;
+      totalCashGap += cGap;
+      if (qGap < 0.0001 && cGap < 0.01) {
+        matchedCount++;
+      } else {
+        discrepancyCount++;
+      }
+    }
+
+    const matchRate = reconciliations.length > 0 ? +((matchedCount / reconciliations.length) * 100).toFixed(1) : 100;
+
+    return {
+      matchedCount,
+      discrepancyCount,
+      totalQtyGap,
+      totalCashGap,
+      matchRate,
+      totalAudited: reconciliations.length,
+    };
+  },
 };
 
 /* Web Worker Dispatcher Hook / Client */
@@ -190,6 +229,8 @@ export function dispatchWorkerComputation<T = any>(
         data = calculations.processOrderBook(message.payload);
       } else if (message.type === 'CALCULATE_PE_CUSTOMER_ALLOCATIONS') {
         data = calculations.computePeCustomerAllocations(message.payload);
+      } else if (message.type === 'COMPUTE_HOLDINGS_RECONCILIATION') {
+        data = calculations.computeHoldingsReconciliation(message.payload);
       }
 
       resolve({

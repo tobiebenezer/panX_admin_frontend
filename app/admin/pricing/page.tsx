@@ -136,6 +136,9 @@ export default function AdminPricingPage() {
         title="Corridors & Rates"
         actions={
           <div className="d-flex gap-2">
+            <Link href="/admin/pricing/bills" className="btn btn-outline-primary btn-sm">
+              <i className="ti ti-receipt me-1" /> Bill Payment Rates &amp; Fees
+            </Link>
             <button type="button" className="btn btn-outline-secondary btn-sm" onClick={loadData}>
               <i className="ti ti-refresh me-1" /> Refresh
             </button>

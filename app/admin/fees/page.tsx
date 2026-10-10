@@ -160,6 +160,9 @@ export default function AdminFeesPage() {
             <button type="button" className="btn btn-outline-secondary btn-sm" onClick={loadFees}>
               <i className="ti ti-refresh me-1" /> Refresh
             </button>
+            <Link href="/admin/pricing/bills" className="btn btn-outline-primary btn-sm">
+              <i className="ti ti-receipt me-1" /> Bill Payment Rates &amp; Fees
+            </Link>
             <Link href="/admin/pricing" className="btn btn-outline-secondary btn-sm">
               <i className="ti ti-arrows-exchange me-1" /> Pricing Desk
             </Link>

@@ -77,6 +77,14 @@ export const ADMIN_NAV: NavSection[] = [
         icon: 'ti-chart-candle',
         label: 'Investments & Capital',
         children: [
+          { href: '/admin/investments/console', label: 'Portfolio Console (Staff)' },
+          { href: '/admin/investments/securities', label: 'Securities Master' },
+          { href: '/admin/investments/broker-accounts', label: 'Broker Accounts' },
+          { href: '/admin/investments/orders', label: 'Orders Monitor' },
+          { href: '/admin/investments/reconciliation', label: 'Holdings Reconciliation' },
+          { href: '/admin/investments/dividends', label: 'Dividends & Actions' },
+          { href: '/admin/investments/broker-health', label: 'Broker Health & Cal' },
+          { href: '/admin/investments/disputes', label: 'Investment Disputes' },
           { href: '/admin/investments/terminal', label: "Trader's Terminal" },
           { href: '/admin/investments/portfolios', label: 'Client Portfolios (AUM)' },
           { href: '/admin/investments/private-equity', label: 'Private Equity (PE)' },
@@ -110,6 +118,7 @@ export const ADMIN_NAV: NavSection[] = [
         children: [
           { href: '/admin/finance', label: 'Treasury & Runways' },
           { href: '/admin/pricing', label: 'Corridors & FX Rates' },
+          { href: '/admin/pricing/bills', label: 'Bill Payment Rates & Fees' },
           { href: '/admin/fees', label: 'Fee Schedules' },
         ],
       },

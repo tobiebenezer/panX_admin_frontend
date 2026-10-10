@@ -83,6 +83,8 @@ export function useUser(): UserCtx {
   return useContext(Ctx);
 }
 
+export const useAuth = useUser;
+
 export function displayName(user: PaeUser | null): string {
   if (!user) return 'Account';
   return (
