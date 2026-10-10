@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { fmtMoney, fmtNum } from '@/lib/format';
 import { useToast } from '@/components/Toast';
 import { InternalNotesDrawer } from '@/components/admin/InternalNotesDrawer';
+import { ProfitAnalyticsView } from '@/components/admin/finance/ProfitAnalyticsView';
 
 interface BankAccountBalance {
   id: string;
@@ -28,7 +29,7 @@ const SAMPLE_TREASURY_ACCOUNTS: BankAccountBalance[] = [
 export default function FinanceTreasuryPage() {
   const { toast } = useToast();
   const [accounts, setAccounts] = useState<BankAccountBalance[]>(SAMPLE_TREASURY_ACCOUNTS);
-  const [activeTab, setActiveTab] = useState<'balances' | 'sweeps' | 'close_checklist'>('balances');
+  const [activeTab, setActiveTab] = useState<'balances' | 'sweeps' | 'close_checklist' | 'profit_analytics'>('balances');
 
   // Operational Action Modal
   const [actionModal, setActionModal] = useState<{
@@ -166,6 +167,14 @@ export default function FinanceTreasuryPage() {
             </li>
             <li className="nav-item">
               <button
+                className={`nav-link py-3 fs-13 fw-semibold ${activeTab === 'profit_analytics' ? 'active text-primary' : 'text-muted'}`}
+                onClick={() => setActiveTab('profit_analytics')}
+              >
+                <i className="ti ti-chart-arrows-vertical me-1" /> Profit & Margin Intelligence
+              </button>
+            </li>
+            <li className="nav-item">
+              <button
                 className={`nav-link py-3 fs-13 fw-semibold ${activeTab === 'close_checklist' ? 'active text-primary' : 'text-muted'}`}
                 onClick={() => setActiveTab('close_checklist')}
               >
@@ -277,6 +286,10 @@ export default function FinanceTreasuryPage() {
                 </tbody>
               </table>
             </div>
+          )}
+
+          {activeTab === 'profit_analytics' && (
+            <ProfitAnalyticsView />
           )}
 
           {activeTab === 'close_checklist' && (

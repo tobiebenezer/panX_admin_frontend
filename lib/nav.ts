@@ -73,9 +73,16 @@ export const ADMIN_NAV: NavSection[] = [
         ],
       },
       {
-        href: '/admin/investments',
+        id: 'nav-investments-desk',
         icon: 'ti-chart-candle',
-        label: 'Investments Desk',
+        label: 'Investments & Capital',
+        children: [
+          { href: '/admin/investments/terminal', label: "Trader's Terminal" },
+          { href: '/admin/investments/portfolios', label: 'Client Portfolios (AUM)' },
+          { href: '/admin/investments/private-equity', label: 'Private Equity (PE)' },
+          { href: '/admin/investments/advisors', label: 'Staff Advisor Books' },
+          { href: '/admin/investments/custody', label: 'Omnibus Custody & Orders' },
+        ],
       },
       {
         id: 'nav-customer-desk',

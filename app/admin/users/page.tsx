@@ -12,7 +12,9 @@ import { MakerCheckerModal, MakerCheckerAction } from '@/components/admin/MakerC
 import { InternalNotesDrawer } from '@/components/admin/InternalNotesDrawer';
 import { useUser } from '@/lib/auth';
 
-type TabName = 'directory' | 'kyb_business' | 'review' | 'restricted';
+import { UserKycAnalyticsView } from '@/components/admin/users/UserKycAnalyticsView';
+
+type TabName = 'directory' | 'kyb_business' | 'review' | 'restricted' | 'analytics';
 
 const MOCK_SAMPLE_USERS = [
   {
@@ -281,13 +283,25 @@ export default function AdminUsersPage() {
                 <i className="ti ti-ban me-1" /> Restricted / Frozen Accounts
               </button>
             </li>
+            <li className="nav-item">
+              <button
+                className={`nav-link py-3 fs-13 fw-semibold ${tab === 'analytics' ? 'active text-primary' : 'text-muted'}`}
+                onClick={() => setTab('analytics')}
+              >
+                <i className="ti ti-chart-pie me-1" /> Customer & KYC Intelligence
+              </button>
+            </li>
           </ul>
         </div>
 
         <div className="card-body p-4">
-          {/* Search & Filters */}
-          <div className="row g-2 mb-3">
-            <div className="col-md-5">
+          {tab === 'analytics' ? (
+            <UserKycAnalyticsView />
+          ) : (
+            <>
+              {/* Search & Filters */}
+              <div className="row g-2 mb-3">
+                <div className="col-md-5">
               <div className="input-group input-group-sm">
                 <span className="input-group-text bg-light border-0">
                   <i className="ti ti-search text-muted" />
@@ -459,8 +473,10 @@ export default function AdminUsersPage() {
               </tbody>
             </table>
           </div>
-        </div>
-      </div>
+        </>
+      )}
+    </div>
+  </div>
 
       {/* 360 Profile Modal Drawer */}
       {activeUser && (

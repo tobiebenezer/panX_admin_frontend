@@ -78,17 +78,23 @@ export function PageHeader({
   title,
   subtitle,
   breadcrumb,
+  badge,
   actions,
 }: {
   title: string;
   subtitle?: string;
   breadcrumb?: string;
+  badge?: ReactNode;
   actions?: ReactNode;
 }) {
   return (
     <div className="page-title-head d-flex align-items-center justify-content-between mb-4 flex-wrap gap-2">
       <div className="flex-grow-1">
-        <h4 className="page-main-title m-0 fs-20 fw-bold text-dark">{title}</h4>
+        <div className="d-flex align-items-center gap-2">
+          <h4 className="page-main-title m-0 fs-20 fw-bold text-dark">{title}</h4>
+          {badge}
+        </div>
+        {subtitle && <p className="text-muted fs-12 mb-0 mt-1">{subtitle}</p>}
       </div>
       {actions ? <div className="text-end d-flex align-items-center gap-2">{actions}</div> : null}
     </div>

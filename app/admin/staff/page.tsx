@@ -6,6 +6,7 @@ import { api, listOf } from '@/lib/api';
 import { fmtDate } from '@/lib/format';
 import { Card, EmptyState, Modal, PageHeader, AvatarInitials } from '@/components/ui';
 import { useToast } from '@/components/Toast';
+import { StaffOperationsAnalyticsView } from '@/components/admin/staff/StaffOperationsAnalyticsView';
 
 interface StaffRecord {
   id: string;
@@ -23,10 +24,9 @@ interface StaffRecord {
   created_at?: string;
 }
 
-
-
 export default function AdminStaffPage() {
   const { toast } = useToast();
+  const [activeTab, setActiveTab] = useState<'roster' | 'analytics'>('roster');
 
   const [staffList, setStaffList] = useState<StaffRecord[]>([]);
   const [loading, setLoading] = useState(false);
@@ -217,10 +217,39 @@ export default function AdminStaffPage() {
         </div>
       </div>
 
-      {/* Staff Roster Card */}
-      <div className="card border-0 shadow-sm rounded-3">
-        {/* Filter Bar */}
-        <div className="card-header bg-white border-bottom py-3 px-4">
+      {/* Tabs */}
+      <ul className="nav nav-tabs mb-4 border-bottom">
+        <li className="nav-item">
+          <button
+            type="button"
+            className={`nav-link fw-semibold px-3 py-2 border-0 border-bottom border-2 ${
+              activeTab === 'roster' ? 'border-primary text-primary' : 'text-muted border-transparent'
+            }`}
+            onClick={() => setActiveTab('roster')}
+          >
+            <i className="ti ti-users me-2" /> Staff Personnel Roster
+          </button>
+        </li>
+        <li className="nav-item">
+          <button
+            type="button"
+            className={`nav-link fw-semibold px-3 py-2 border-0 border-bottom border-2 ${
+              activeTab === 'analytics' ? 'border-primary text-primary' : 'text-muted border-transparent'
+            }`}
+            onClick={() => setActiveTab('analytics')}
+          >
+            <i className="ti ti-chart-bar me-2" /> Operations &amp; Desk Analytics
+          </button>
+        </li>
+      </ul>
+
+      {activeTab === 'analytics' ? (
+        <StaffOperationsAnalyticsView />
+      ) : (
+        /* Staff Roster Card */
+        <div className="card border-0 shadow-sm rounded-3">
+          {/* Filter Bar */}
+          <div className="card-header bg-white border-bottom py-3 px-4">
           <div className="row g-2 align-items-center">
             <div className="col-12 col-lg-4">
               <div className="input-group input-group-sm">
@@ -420,6 +449,7 @@ export default function AdminStaffPage() {
           </div>
         </div>
       </div>
+      )}
 
       {/* Role Assignment Modal */}
       {roleEditStaff && (

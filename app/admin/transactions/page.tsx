@@ -7,10 +7,13 @@ import { fmtDate, fmtMoney } from '@/lib/format';
 import { Card, DataTable, ErrorState, Modal, PageHeader, StatusPill } from '@/components/ui';
 import { useToast } from '@/components/Toast';
 
+import { TransactionsAnalyticsView } from '@/components/admin/transactions/TransactionsAnalyticsView';
+
 type ResolutionAction = 'force_complete' | 'retry' | 'reverse';
 
 export default function AdminTransactionsPage() {
   const { toast } = useToast();
+  const [activeTab, setActiveTab] = useState<'ledger' | 'analytics'>('ledger');
 
   const [transactions, setTransactions] = useState<any[] | null>(null);
   const [total, setTotal] = useState(0);
@@ -100,8 +103,37 @@ export default function AdminTransactionsPage() {
         }
       />
 
-      <Card className="shadow-sm border-0 mb-4">
-        <div className="d-flex flex-wrap gap-2 justify-content-between align-items-center mb-3">
+      {/* Tabs */}
+      <ul className="nav nav-tabs mb-4 border-bottom">
+        <li className="nav-item">
+          <button
+            type="button"
+            className={`nav-link fw-semibold px-3 py-2 border-0 border-bottom border-2 ${
+              activeTab === 'ledger' ? 'border-primary text-primary' : 'text-muted border-transparent'
+            }`}
+            onClick={() => setActiveTab('ledger')}
+          >
+            <i className="ti ti-list me-2" /> Global Ledger
+          </button>
+        </li>
+        <li className="nav-item">
+          <button
+            type="button"
+            className={`nav-link fw-semibold px-3 py-2 border-0 border-bottom border-2 ${
+              activeTab === 'analytics' ? 'border-primary text-primary' : 'text-muted border-transparent'
+            }`}
+            onClick={() => setActiveTab('analytics')}
+          >
+            <i className="ti ti-chart-dots me-2" /> Volume & Velocity Analytics
+          </button>
+        </li>
+      </ul>
+
+      {activeTab === 'analytics' ? (
+        <TransactionsAnalyticsView />
+      ) : (
+        <Card className="shadow-sm border-0 mb-4">
+          <div className="d-flex flex-wrap gap-2 justify-content-between align-items-center mb-3">
           <div className="d-flex flex-wrap gap-2 flex-grow-1" style={{ maxWidth: 640 }}>
             <div className="input-group input-group-sm">
               <span className="input-group-text bg-light border-0">
@@ -216,6 +248,7 @@ export default function AdminTransactionsPage() {
           />
         )}
       </Card>
+      )}
 
       {/* Transaction Details Inspector Modal */}
       {detailTx && (

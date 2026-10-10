@@ -6,9 +6,11 @@ import { api, listOf } from '@/lib/api';
 import { fmtDate } from '@/lib/format';
 import { Card, DataTable, ErrorState, Modal, PageHeader, StatusPill } from '@/components/ui';
 import { useToast } from '@/components/Toast';
+import { SystemArchitectureTelemetryView } from '@/components/admin/observability/SystemArchitectureTelemetryView';
 
 export default function AdminObservabilityPage() {
   const { toast } = useToast();
+  const [activeTab, setActiveTab] = useState<'overview' | 'daemons_circuits'>('overview');
 
   const [summary, setSummary] = useState<any | null>(null);
   const [services, setServices] = useState<any[] | null>(null);
@@ -93,8 +95,38 @@ export default function AdminObservabilityPage() {
         }
       />
 
-      <div className="row g-3 mb-4">
-        <div className="col-xl-3 col-md-6">
+      {/* Tabs */}
+      <ul className="nav nav-tabs mb-4 border-bottom">
+        <li className="nav-item">
+          <button
+            type="button"
+            className={`nav-link fw-semibold px-3 py-2 border-0 border-bottom border-2 ${
+              activeTab === 'overview' ? 'border-primary text-primary' : 'text-muted border-transparent'
+            }`}
+            onClick={() => setActiveTab('overview')}
+          >
+            <i className="ti ti-heart-rate-monitor me-2" /> Live Heartbeats &amp; Exceptions
+          </button>
+        </li>
+        <li className="nav-item">
+          <button
+            type="button"
+            className={`nav-link fw-semibold px-3 py-2 border-0 border-bottom border-2 ${
+              activeTab === 'daemons_circuits' ? 'border-primary text-primary' : 'text-muted border-transparent'
+            }`}
+            onClick={() => setActiveTab('daemons_circuits')}
+          >
+            <i className="ti ti-cpu me-2" /> Daemon Architecture &amp; Circuit Breakers
+          </button>
+        </li>
+      </ul>
+
+      {activeTab === 'daemons_circuits' ? (
+        <SystemArchitectureTelemetryView />
+      ) : (
+        <>
+          <div className="row g-3 mb-4">
+            <div className="col-xl-3 col-md-6">
           <div className="card shadow-sm border-0 h-100">
             <div className="card-body">
               <div className="d-flex align-items-center justify-content-between mb-2">
@@ -253,6 +285,8 @@ export default function AdminObservabilityPage() {
           </Card>
         </div>
       </div>
+    </>
+  )}
 
       {/* Resolve Exception Modal */}
       {resolveTarget && (
