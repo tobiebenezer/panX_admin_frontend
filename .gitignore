@@ -1,0 +1,9 @@
+node_modules/
+out/
+.next/
+*.tsbuildinfo
+next-env.d.ts
+FRONTEND_INDEX.md
+.env*
+.env*.local
+

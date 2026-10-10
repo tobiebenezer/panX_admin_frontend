@@ -1,0 +1,160 @@
+/* ============================================================
+   Pan-African Exchange — components on top of the Zentic design
+   system. Uses only --zc-* tokens so light/dark/RTL all work.
+   ============================================================ */
+
+/* ---- status pills ------------------------------------------------- */
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: var(--zc-radius-pill);
+  font-size: var(--zc-fs-xs);
+  font-weight: 600;
+  text-transform: capitalize;
+  white-space: nowrap;
+}
+.status-pill::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+.status-success { background: var(--zc-success-light); color: #047857; }
+.status-warning { background: var(--zc-warning-light); color: #B45309; }
+.status-danger { background: var(--zc-danger-light); color: #B91C1C; }
+.status-info { background: var(--zc-info-light); color: var(--zc-blue); }
+.status-neutral { background: var(--zc-border-light); color: var(--zc-text-secondary); }
+[data-theme="dark"] .status-success { background: rgba(16, 185, 129, .14); color: #34D399; }
+[data-theme="dark"] .status-warning { background: rgba(245, 158, 11, .14); color: #FBBF24; }
+[data-theme="dark"] .status-danger { background: rgba(239, 68, 68, .14); color: #F87171; }
+[data-theme="dark"] .status-info { background: rgba(59, 130, 246, .16); color: #93C5FD; }
+
+/* ---- currency / asset chips --------------------------------------- */
+.asset-chip {
+  display: inline-flex; align-items: center; gap: 8px; font-weight: 700;
+}
+.asset-chip .asset-badge {
+  width: 32px; height: 32px; border-radius: 50%;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 800; color: #fff;
+  background: linear-gradient(135deg, var(--zc-primary), var(--zc-primary-middle));
+}
+.asset-chip.btc .asset-badge { background: linear-gradient(135deg, #F7931A, #E27C00); }
+.asset-chip.eth .asset-badge { background: linear-gradient(135deg, #627EEA, #3C5BD9); }
+.asset-chip.usdt .asset-badge { background: linear-gradient(135deg, #26A17B, #1B8A66); }
+.asset-chip.sol .asset-badge { background: linear-gradient(135deg, #9945FF, #14F195); color: #0F172A; }
+.currency-flag {
+  width: 26px; height: 26px; border-radius: 50%; flex: 0 0 auto;
+  display: inline-flex; align-items: center; justify-content: center;
+  background: var(--zc-primary-xlight); color: var(--zc-primary-dark);
+  font-size: 10px; font-weight: 800;
+}
+
+/* ---- amount cell ---------------------------------------------------- */
+.amount-cell { font-family: var(--zc-font-mono); font-weight: 700; }
+.amount-cell small { display: block; font-weight: 500; color: var(--zc-text-muted); font-size: var(--zc-fs-xs); }
+
+/* ---- empty & loading states ---------------------------------------- */
+.empty-state { text-align: center; padding: 48px 16px; }
+.empty-state .empty-icon {
+  width: 56px; height: 56px; margin: 0 auto 12px; border-radius: 50%;
+  background: var(--zc-primary-xlight); color: var(--zc-primary);
+  display: flex; align-items: center; justify-content: center; font-size: 22px;
+}
+.empty-state .empty-icon.danger { background: var(--zc-danger-light); color: var(--zc-danger); }
+.empty-state .empty-title { font-weight: 700; margin-bottom: 2px; }
+.empty-state .empty-hint { color: var(--zc-text-muted); font-size: var(--zc-fs-sm); margin: 0; }
+
+.skeleton-line {
+  height: 12px; border-radius: var(--zc-radius-pill);
+  background: linear-gradient(90deg, var(--zc-border-light) 25%, var(--zc-border-color) 50%, var(--zc-border-light) 75%);
+  background-size: 200% 100%; animation: pae-shimmer 1.4s infinite; margin-bottom: 10px;
+}
+@keyframes pae-shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+/* ---- stepper (KYC / opt-in flows) ----------------------------------- */
+.pae-steps { display: flex; gap: 0; margin-bottom: 20px; }
+.pae-step { flex: 1; text-align: center; position: relative; font-size: var(--zc-fs-xs); color: var(--zc-text-muted); }
+.pae-step::before {
+  content: ""; position: absolute; top: 15px; left: -50%; right: 50%;
+  height: 2px; background: var(--zc-border-color);
+}
+.pae-step:first-child::before { display: none; }
+.pae-step-dot {
+  width: 32px; height: 32px; margin: 0 auto 8px; border-radius: 50%; z-index: 1; position: relative;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--zc-card-bg); border: 2px solid var(--zc-border-color);
+  font-weight: 700; color: var(--zc-text-muted);
+}
+.pae-step.active .pae-step-dot { border-color: var(--zc-primary); color: var(--zc-primary); box-shadow: var(--zc-shadow-ai); }
+.pae-step.active { color: var(--zc-text-primary); font-weight: 600; }
+.pae-step.done .pae-step-dot { border-color: var(--zc-success); background: var(--zc-success); color: #fff; }
+.pae-step.done::before, .pae-step.active::before { background: var(--zc-success); }
+
+/* ---- transaction timeline ------------------------------------------- */
+.tx-timeline { list-style: none; margin: 0; padding: 0 0 0 6px; }
+.tx-timeline li { position: relative; padding: 0 0 20px 26px; border-left: 2px solid var(--zc-border-light); }
+.tx-timeline li:last-child { border-left-color: transparent; padding-bottom: 0; }
+.tx-timeline .tl-dot {
+  position: absolute; left: -8px; top: 2px; width: 14px; height: 14px; border-radius: 50%;
+  background: var(--zc-primary); box-shadow: 0 0 0 4px var(--zc-primary-xlight);
+}
+.tx-timeline li.tone-success .tl-dot { background: var(--zc-success); box-shadow: 0 0 0 4px var(--zc-success-light); }
+.tx-timeline li.tone-danger .tl-dot { background: var(--zc-danger); box-shadow: 0 0 0 4px var(--zc-danger-light); }
+.tx-timeline li.tone-warning .tl-dot { background: var(--zc-warning); box-shadow: 0 0 0 4px var(--zc-warning-light); }
+.tx-timeline .tl-title { font-weight: 600; font-size: var(--zc-fs-sm); }
+.tx-timeline .tl-time { font-size: var(--zc-fs-xs); color: var(--zc-text-muted); }
+
+/* ---- balance hero ----------------------------------------------------- */
+.balance-hero {
+  background:
+    radial-gradient(120% 160% at 100% 0%, rgba(134, 239, 172, 0.18), transparent 50%),
+    radial-gradient(120% 140% at 0% 100%, rgba(80, 70, 229, 0.35), transparent 55%),
+    linear-gradient(135deg, var(--zc-dark-surface), var(--zc-dark-surface-2));
+  color: var(--zc-on-dark-text);
+  border-radius: var(--zc-radius-xl);
+  padding: 28px;
+  position: relative;
+  overflow: hidden;
+}
+.balance-hero .bh-label { color: var(--zc-on-dark-text-muted); font-size: var(--zc-fs-sm); letter-spacing: .04em; text-transform: uppercase; }
+.balance-hero .bh-value { font-size: 34px; font-weight: 800; font-family: var(--zc-font-mono); margin: 6px 0 2px; }
+.balance-hero .bh-sub { color: var(--zc-on-dark-text-muted); font-size: var(--zc-fs-sm); }
+.balance-hero .bh-chip {
+  display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; border-radius: var(--zc-radius-pill);
+  background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.12);
+  font-size: var(--zc-fs-sm); font-weight: 600; color: var(--zc-on-dark-text);
+}
+
+/* ---- quote summary panel ---------------------------------------------- */
+.quote-summary .qs-row { display: flex; justify-content: space-between; gap: 12px; padding: 10px 0; border-bottom: 1px dashed var(--zc-border-color); font-size: var(--zc-fs-sm); }
+.quote-summary .qs-row:last-child { border-bottom: 0; }
+.quote-summary .qs-row span:first-child { color: var(--zc-text-secondary); }
+.quote-summary .qs-row strong { font-family: var(--zc-font-mono); }
+.quote-summary .qs-total strong { font-size: 18px; color: var(--zc-primary); }
+
+/* ---- OTP inputs --------------------------------------------------------- */
+.otp-group { display: flex; gap: 10px; justify-content: center; }
+.otp-group input {
+  width: 52px; height: 60px; text-align: center; font-size: 22px; font-weight: 800;
+  border: 2px solid var(--zc-border-color); border-radius: var(--zc-radius-md);
+  background: var(--zc-card-bg); color: var(--zc-text-primary);
+}
+.otp-group input:focus { outline: none; border-color: var(--zc-primary); box-shadow: var(--zc-shadow-ai); }
+
+/* ---- avatar initials (no image assets needed) ---------------------------- */
+.avatar-initials {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--zc-primary), var(--zc-primary-middle));
+  color: #fff; font-size: 13px; font-weight: 800;
+  display: inline-flex; align-items: center; justify-content: center;
+  user-select: none; flex: 0 0 auto;
+}
+.topbar-user .avatar-initials { cursor: pointer; }
+
+/* ---- misc ---------------------------------------------------------------- */
+.text-mono { font-family: var(--zc-font-mono); }
+.copy-chip { cursor: pointer; } .copy-chip:hover { color: var(--zc-primary); }
+.chart-h-sm { height: 180px; } .chart-h-md { height: 260px; } .chart-h-lg { height: 320px; }
+.w-select-sm { min-width: 150px; }
+.section-label {
+  font-size: var(--zc-fs-xs); font-weight: 800; letter-spacing: .08em; text-transform: uppercase;
+  color: var(--zc-sidebar-section-color); margin-bottom: 10px;
+}
